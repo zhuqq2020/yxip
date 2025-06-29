@@ -60,7 +60,14 @@ with open('ip.txt', 'w') as file:
 
                 # 查找IPv6地址
                 ipv6_matches = re.findall(ipv6_pattern, element_text)
-                for ip in ipv6_matches:
+                for match in ipv6_matches:
+                    # 确保 match 是一个字符串。如果 re.findall 返回一个元组，
+                    # 说明你的正则表达式有多个捕获组。你需要选择哪个组
+                    # 包含你想要的 IP 地址。 在这里，我们假设第一个组包含 IP 地址
+                    if isinstance(match, tuple):
+                        ip = match[0]  # 假设第一个捕获组是 IP 地址
+                    else:
+                        ip = match  # 如果不是元组，直接使用匹配项
                     file.write(ip + '\n') # 直接写入，因为已经确保了是字符串
 
         except requests.exceptions.RequestException as e:
