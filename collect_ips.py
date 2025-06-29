@@ -68,7 +68,7 @@ with open('ip.txt', 'w') as file:
                         ip = match[0]  # 假设第一个捕获组是 IP 地址
                     else:
                         ip = match  # 如果不是元组，直接使用匹配项
-                    file.write(ip + '\n') # 直接写入，因为已经确保了是字符串
+                    file.write([{ip}] + '\n') # 直接写入，因为已经确保了是字符串
 
         except requests.exceptions.RequestException as e:
             print(f"抓取 {url} 时发生错误: {e}")  # 打印错误信息
