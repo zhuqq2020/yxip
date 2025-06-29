@@ -7,10 +7,12 @@ import os  # 导入os库，用于文件操作
 urls = [
     'https://api.uouin.com/cloudflare.html',
     'https://ip.164746.xyz',
-    'https://vps789.com/cfip',
+    'https://vps789.com/cfip/',
     'https://cf.090227.xyz',
     'https://www.wetest.vip/page/cloudfront/address_v4.html',
     'https://www.wetest.vip/page/cloudflare/address_v4.html'  # 已修正URL
+    'https://www.wetest.vip/page/cloudfront/address_v6.html',
+    'https://www.wetest.vip/page/cloudflare/address_v6.html'  # 已修正URL
 ]
 
 # 正则表达式用于匹配IPv4地址
