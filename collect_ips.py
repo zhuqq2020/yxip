@@ -8,6 +8,8 @@ urls = ['https://api.uouin.com/cloudflare.html',
         'https://ip.164746.xyz',
         'https://vps789.com/cfip',
         'https://cf.090227.xyz'
+        'https://www.wetest.vip/page/cloudfront/address_v4.html'
+        https://www.wetest.vip/page/cloudflare/address_v4.html
         ]
 
 # 正则表达式用于匹配IP地址
