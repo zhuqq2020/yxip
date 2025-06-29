@@ -45,7 +45,7 @@ with open('ip.txt', 'w') as file:
             elif url == 'https://cf.090227.xyz':
                 elements = soup.find_all('li')
             elif "wetest.vip" in url:
-                elements = soup.find_all('li')
+                elements = soup.find_all('tr')
             else:
                 elements = [] # Handle other cases or raise an exception if unexpected
 
