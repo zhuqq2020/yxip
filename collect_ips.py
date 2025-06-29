@@ -10,7 +10,7 @@ urls = [
     'https://vps789.com/cfip/',
     'https://cf.090227.xyz',
     'https://www.wetest.vip/page/cloudfront/address_v4.html',
-    'https://www.wetest.vip/page/cloudflare/address_v4.html'  # 已修正URL
+    'https://www.wetest.vip/page/cloudflare/address_v4.html',  # 已修正URL
     'https://www.wetest.vip/page/cloudfront/address_v6.html',
     'https://www.wetest.vip/page/cloudflare/address_v6.html'  # 已修正URL
 ]
