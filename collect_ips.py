@@ -41,13 +41,13 @@ with open('ip.txt', 'w') as file:
             elif url == 'https://ip.164746.xyz':
                 elements = soup.find_all('tr')
             elif url == 'https://vps789.com/cfip/':  # 针对vps789.com网站的特殊处理
-                elements = soup.find_all('li')  # 该网站使用<li>标签
+                elements = soup.find_all('tr')  # 该网站使用<li>标签
             elif url == 'https://cf.090227.xyz':
-                elements = soup.find_all('li')
+                elements = soup.find_all('tr')
             elif "wetest.vip" in url:
                 elements = soup.find_all('tr')
             else:
-                elements = [] # Handle other cases or raise an exception if unexpected
+                elements = soup.find_all('li')
 
             # 遍历所有元素，查找IP地址
             for element in elements:
