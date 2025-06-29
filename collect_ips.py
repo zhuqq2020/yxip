@@ -13,7 +13,8 @@ urls = ['https://api.uouin.com/cloudflare.html',
         ]
 
 # 正则表达式用于匹配IP地址
-ip_pattern = r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
+ipv4_pattern = r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
+ipv6_pattern = r'([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)'  # More robust IPv6 regex
 
 # 检查ip.txt文件是否存在,如果存在则删除它
 if os.path.exists('ip.txt'):
@@ -23,8 +24,9 @@ if os.path.exists('ip.txt'):
 with open('ip.txt', 'w') as file:
     for url in urls:
         # 发送HTTP请求获取网页内容
-        response = requests.get(url)
-        
+        response = requests.get(url, timeout=10) 
+        response.raise_for_status()
+            
         # 使用BeautifulSoup解析HTML
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -33,16 +35,22 @@ with open('ip.txt', 'w') as file:
             elements = soup.find_all('tr')
         elif url == 'https://ip.164746.xyz':
             elements = soup.find_all('tr')
+        elif url == 'https://vps789.com/cfip':
+            elements = soup.find_all('li')
         else:
             elements = soup.find_all('tr')
         
         # 遍历所有元素,查找IP地址
         for element in elements:
             element_text = element.get_text()
-            ip_matches = re.findall(ip_pattern, element_text)
-            
-            # 如果找到IP地址,则写入文件
-            for ip in ip_matches:
+            ipv4_matches = re.findall(ip_pattern, element_text)
+            for ip in ipv4_matches:
+                file.write(ip + '\n')
+            ipv6_matches = re.findall(ipv6_pattern, element_text)
+            for ip in ipv6_matches:
                 file.write(ip + '\n')
 
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {url}: {e}")                 
+              
 print('IP地址已保存到ip.txt文件中。')
