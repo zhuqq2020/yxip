@@ -18,7 +18,7 @@ urls = [
 # 正则表达式用于匹配IPv4地址
 ipv4_pattern = r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
 # 正则表达式用于匹配IPv6地址 (更健壮的版本)
-ipv6_pattern = r'((([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4})|(([0-9a-fA-F]{1,4}:){1,7}:)|(([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})|(([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2})|(([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3})|(([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4})|(([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5})|([0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6}))|:((:[0-9a-fA-F]{1,4}){1,7}|:))'
+ipv6_pattern = r'([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)'
 
 # 检查ip.txt文件是否存在，如果存在则删除它
 if os.path.exists('ip.txt'):
@@ -52,12 +52,12 @@ with open('ip.txt', 'w') as file:
                 # 查找IPv4地址
                 ipv4_matches = re.findall(ipv4_pattern, element_text)
                 for ip in ipv4_matches:
-                    file.write(str(ip) + '\n')  # 强制转换为字符串
+                    file.write(ip + '\n')  # 强制转换为字符串
 
                 # 查找IPv6地址
                 ipv6_matches = re.findall(ipv6_pattern, element_text)
                 for ip in ipv6_matches:
-                    file.write(str(ip) + '\n')  # 强制转换为字符串
+                    file.write(ip + '\n') # 直接写入，因为已经确保了是字符串
 
         except requests.exceptions.RequestException as e:
             print(f"抓取 {url} 时发生错误: {e}")  # 打印错误信息
