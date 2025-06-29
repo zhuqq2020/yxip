@@ -39,9 +39,9 @@ with open('ip.txt', 'w') as file:
             elif url == 'https://ip.164746.xyz':
                 elements = soup.find_all('tr')
             elif url == 'https://vps789.com/cfip':  # 针对vps789.com网站的特殊处理
-                elements = soup.find_all('li')  # 该网站使用<li>标签
+                elements = soup.find_all('tr')  # 该网站使用<li>标签
             else:
-                elements = soup.find_all('tr')
+                elements = soup.find_all('li')
 
             # 遍历所有元素，查找IP地址
             for element in elements:
@@ -50,12 +50,12 @@ with open('ip.txt', 'w') as file:
                 # 查找IPv4地址
                 ipv4_matches = re.findall(ipv4_pattern, element_text)
                 for ip in ipv4_matches:
-                    file.write(ip + '\n')
+                    file.write(str(ip) + '\n')  # 强制转换为字符串
 
                 # 查找IPv6地址
                 ipv6_matches = re.findall(ipv6_pattern, element_text)
                 for ip in ipv6_matches:
-                    file.write(ip + '\n')
+                    file.write(str(ip) + '\n')  # 强制转换为字符串
 
         except requests.exceptions.RequestException as e:
             print(f"抓取 {url} 时发生错误: {e}")  # 打印错误信息
