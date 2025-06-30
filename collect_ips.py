@@ -7,12 +7,11 @@ import os  # 导入os库，用于文件操作
 urls = [
     'https://api.uouin.com/cloudflare.html',
     'https://ip.164746.xyz',
-    'https://vps789.com/cfip/',
     'https://cf.090227.xyz',
     'https://www.wetest.vip/page/cloudfront/address_v4.html',
-    'https://www.wetest.vip/page/cloudflare/address_v4.html',
+    'https://www.wetest.vip/page/cloudflare/address_v4.html',  # 已修正URL
     'https://www.wetest.vip/page/cloudfront/address_v6.html',
-    'https://www.wetest.vip/page/cloudflare/address_v6.html'
+    'https://www.wetest.vip/page/cloudflare/address_v6.html'  # 已修正URL
 ]
 
 # 正则表达式用于匹配IPv4地址
@@ -42,16 +41,21 @@ for url in urls:
             elements = soup.find_all('tr')
         elif url == 'https://ip.164746.xyz':
             elements = soup.find_all('tr')
-        elif url == 'https://vps789.com/cfip/':  # 针对vps789.com网站的特殊处理
-            elements = soup.find_all('tr')  # 该网站使用<li>标签
         elif url == 'https://cf.090227.xyz':
             elements = soup.find_all('tr')
         elif "wetest.vip" in url:
             elements = soup.find_all('tr')
+            # 针对 wetest.vip 网站的特殊处理，提取 IPv6 地址
+            for element in elements:
+                td_element = element.find('td', {'data-label': '优选地址'})
+                if td_element:
+                    ipv6_text = td_element.get_text().strip()
+                    if re.match(ipv6_pattern, ipv6_text):
+                        unique_ips.add(ipv6_text + " #IPv6")
         else:
             elements = soup.find_all('li')
 
-        # 遍历所有元素，查找IP地址
+        # 遍历所有元素，查找IPv4地址
         for element in elements:
             element_text = element.get_text()
 
@@ -67,7 +71,7 @@ for url in urls:
                     ip = match[0]  # 假设第一个捕获组是 IP 地址
                 else:
                     ip = match
-                unique_ips.add(ip)  # 添加到集合，自动去重
+                unique_ips.add(ip + " #IPv6")  # 添加到集合，自动去重，并添加 #IPv6
 
     except requests.exceptions.RequestException as e:
         print(f"抓取 {url} 时发生错误: {e}")  # 打印错误信息
