@@ -10,17 +10,15 @@ urls = [
     'https://vps789.com/cfip/',
     'https://cf.090227.xyz',
     'https://www.wetest.vip/page/cloudfront/address_v4.html',
-    'https://www.wetest.vip/page/cloudflare/address_v4.html',  # 已修正URL
+    'https://www.wetest.vip/page/cloudflare/address_v4.html',
     'https://www.wetest.vip/page/cloudfront/address_v6.html',
-    'https://www.wetest.vip/page/cloudflare/address_v6.html'  # 已修正URL
+    'https://www.wetest.vip/page/cloudflare/address_v6.html'
 ]
 
 # 正则表达式用于匹配IPv4地址
 ipv4_pattern = r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
-
-# 更精确的IPv6地址正则表达式
+# 正则表达式用于匹配IPv6地址 (更健壮的版本)
 ipv6_pattern = r'(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))'
-
 
 # 存储提取的IP地址的集合，用于去重
 unique_ips = set()
@@ -64,7 +62,11 @@ for url in urls:
 
             # 查找IPv6地址
             ipv6_matches = re.findall(ipv6_pattern, element_text)
-            for ip in ipv6_matches:
+            for match in ipv6_matches:
+                if isinstance(match, tuple):
+                    ip = match[0]  # 假设第一个捕获组是 IP 地址
+                else:
+                    ip = match
                 unique_ips.add(ip)  # 添加到集合，自动去重
 
     except requests.exceptions.RequestException as e:
