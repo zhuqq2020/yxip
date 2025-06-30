@@ -10,15 +10,11 @@ urls = [
     'https://ip.164746.xyz',
     'https://cf.090227.xyz',
     'https://www.wetest.vip/page/cloudfront/address_v4.html',
-    'https://www.wetest.vip/page/cloudflare/address_v4.html',  # 已修正URL
-    'https://www.wetest.vip/page/cloudfront/address_v6.html',
-    'https://www.wetest.vip/page/cloudflare/address_v6.html'  # 已修正URL
+    'https://www.wetest.vip/page/cloudflare/address_v4.html'
 ]
 
 # 正则表达式用于匹配IPv4地址
 ipv4_pattern = r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
-# 正则表达式用于匹配IPv6地址 (更健壮的版本)
-ipv6_pattern = r'(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))'
 
 # 存储提取的IP地址的列表，用于去重和编号
 unique_ips = []
@@ -53,16 +49,6 @@ for url in urls:
             elements = soup.find_all('tr')
         elif "wetest.vip" in url:
             elements = soup.find_all('tr')
-            # 针对 wetest.vip 网站的特殊处理，提取 IPv6 地址
-            for element in elements:
-                td_element = element.find('td', {'data-label': '优选地址'})
-                if td_element:
-                    ipv6_text = td_element.get_text(strip=True)  # 使用 strip=True 清除空白
-                    if re.match(ipv6_pattern, ipv6_text):
-                        formatted_ip = f"{ipv6_text}#{counter:03d}.IPv6.{domain}"  # 移除空格
-                        if formatted_ip not in unique_ips:
-                            unique_ips.append(formatted_ip)
-                            counter += 1
         else:
             elements = soup.find_all('li')
 
@@ -74,18 +60,6 @@ for url in urls:
             ipv4_matches = re.findall(ipv4_pattern, element_text)
             for ip in ipv4_matches:
                 formatted_ip = f"{ip}#{counter:03d}.IPv4.{domain}"  # 移除空格
-                if formatted_ip not in unique_ips:
-                    unique_ips.append(formatted_ip)
-                    counter += 1
-
-            # 查找IPv6地址
-            ipv6_matches = re.findall(ipv6_pattern, element_text)
-            for match in ipv6_matches:
-                if isinstance(match, tuple):
-                    ip = match[0]  # 假设第一个捕获组是 IP 地址
-                else:
-                    ip = match
-                formatted_ip = f"{ip}#{counter:03d}.IPv6.{domain}"  # 移除空格
                 if formatted_ip not in unique_ips:
                     unique_ips.append(formatted_ip)
                     counter += 1
