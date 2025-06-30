@@ -62,7 +62,11 @@ for url in urls:
 
             # 查找IPv6地址
             ipv6_matches = re.findall(ipv6_pattern, element_text)
-            for ip in ipv6_matches:
+            for match in ipv6_matches:
+                if isinstance(match, tuple):
+                    ip = match[0]  # 假设第一个捕获组是 IP 地址
+                else:
+                    ip = match
                 unique_ips.add(ip)  # 添加到集合，自动去重
 
     except requests.exceptions.RequestException as e:
