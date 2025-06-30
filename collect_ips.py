@@ -59,7 +59,7 @@ for url in urls:
                 if td_element:
                     ipv6_text = td_element.get_text().strip()
                     if re.match(ipv6_pattern, ipv6_text):
-                        formatted_ip = f"{ipv6_text} #{counter:03d}.IPv6.{domain}"
+                        formatted_ip = f"{ipv6_text}#{counter:03d}.IPv6.{domain}"  # 移除空格
                         if formatted_ip not in unique_ips:
                             unique_ips.append(formatted_ip)
                             counter += 1
@@ -73,7 +73,7 @@ for url in urls:
             # 查找IPv4地址
             ipv4_matches = re.findall(ipv4_pattern, element_text)
             for ip in ipv4_matches:
-                formatted_ip = f"{ip} #{counter:03d}.IPv4.{domain}"
+                formatted_ip = f"{ip}#{counter:03d}.IPv4.{domain}"  # 移除空格
                 if formatted_ip not in unique_ips:
                     unique_ips.append(formatted_ip)
                     counter += 1
@@ -85,7 +85,7 @@ for url in urls:
                     ip = match[0]  # 假设第一个捕获组是 IP 地址
                 else:
                     ip = match
-                formatted_ip = f"{ip} #{counter:03d}.IPv6.{domain}"
+                formatted_ip = f"{ip}#{counter:03d}.IPv6.{domain}"  # 移除空格
                 if formatted_ip not in unique_ips:
                     unique_ips.append(formatted_ip)
                     counter += 1
@@ -100,4 +100,4 @@ with open('ip.txt', 'w') as file:
     for ip in sorted(unique_ips):  # 排序后再写入
         file.write(ip + '\n')
 
-print('IP地址已保存到ip.txt文件中，已去重并添加IPv4/IPv6标识、域名和编号。')
+print('IP地址已保存到ip.txt文件中，已去重并添加IPv4/IPv6标识、域名和编号，IPv4地址后的空格已移除。')
