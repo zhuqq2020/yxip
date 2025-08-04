@@ -1,11 +1,15 @@
-import requests
-from bs4 import BeautifulSoup
-import re
-import os
+import requests  # 导入requests库，用于发送HTTP请求
+from bs4 import BeautifulSoup  # 导入BeautifulSoup库，用于解析HTML内容
+import re  # 导入re库，用于正则表达式匹配
+import os  # 导入os库，用于文件操作
+from urllib.parse import urlparse  # 导入urlparse，用于提取域名
 
 # 目标URL列表
 urls = ['https://api.uouin.com/cloudflare.html', 
-        'https://ip.164746.xyz'
+        'https://ip.164746.xyz', 
+        'https://cf.090227.xyz', 
+        'https://www.wetest.vip/page/cloudfront/address_v4.html', 
+        'https://www.wetest.vip/page/cloudflare/address_v4.html'
         ]
 
 # 正则表达式用于匹配IP地址
@@ -28,6 +32,10 @@ with open('ip.txt', 'w') as file:
         if url == 'https://api.uouin.com/cloudflare.html':
             elements = soup.find_all('tr')
         elif url == 'https://ip.164746.xyz':
+            elements = soup.find_all('tr')
+        elif url == 'https://cf.090227.xyz':
+            elements = soup.find_all('tr')
+        elif "wetest.vip" in url:
             elements = soup.find_all('tr')
         else:
             elements = soup.find_all('li')
