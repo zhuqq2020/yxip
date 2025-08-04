@@ -42,13 +42,13 @@ for url, max_ips in urls_config.items():  # 循环遍历 URL 和最大 IP 数量
 
         # 根据网站的不同结构找到包含IP地址的元素
         if url == 'https://api.uouin.com/cloudflare.html':
-            elements = soup.find_all('tr')
+            elements = soup.find_all('td')
         elif url == 'https://ip.164746.xyz':
-            elements = soup.find_all('tr')
+            elements = soup.find_all('td')
         elif url == 'https://cf.090227.xyz':
-            elements = soup.find_all('tr')
+            elements = soup.find_all('td')
         elif "wetest.vip" in url:
-            elements = soup.find_all('tr')
+            elements = soup.find_all('td')
         else:
             elements = soup.find_all('li')
 
